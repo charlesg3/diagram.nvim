@@ -22,7 +22,8 @@ M.query_buffer_diagrams = function(bufnr)
   end
 
   local buf = bufnr or vim.api.nvim_get_current_buf()
-  local parser = vim.treesitter.get_parser(buf, "markdown")
+  local ok, parser = pcall(vim.treesitter.get_parser, buf, "markdown")
+  if not ok or not parser then return {} end
   parser:parse(true)
 
   local root = parser:parse()[1]:root()
